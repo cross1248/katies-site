@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<iframe id="target" src="https://discord.com/app" style="display:none;"></iframe>
 </head>
 <body>
 
@@ -61,6 +60,21 @@
   </section>
 
   <section class="term">
+    <div class="bar"><b>root@katie:~$ ./ask</b><i>_ □ x</i></div>
+    <div class="body">
+      <p>got a question? type it below.</p>
+      <div class="ask">
+        <label class="prompt" for="q">
+          <span class="ps1">guest@katie:~$</span>
+          <textarea id="q" maxlength="300" rows="3" placeholder="type your question here..." spellcheck="false"></textarea>
+        </label>
+        <div class="askrow"><span id="qcount">0/300</span><button id="send">[ SEND &gt;&gt; ]</button></div>
+        <p id="status" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="term">
     <div class="bar"><b>root@katie:~$ ./contact</b><i>_ □ x</i></div>
     <div class="body links">
       <a href="https://discord.gg/eknZdffevd">Discord</a><a href="https://www.roblox.com/users/5305930739/profile">Roblox</a>
@@ -71,6 +85,5 @@
 </main>
 
 <script src="script.js"></script>
-<script src="index.js"></script>
 </body>
 </html>
