@@ -120,3 +120,46 @@ try {
   localStorage.setItem("visits", v);
   document.getElementById("count").textContent = String(v).padStart(4, "0");
 } catch {}
+
+// ---- ask a question -> Discord webhook ----
+// Paste your webhook URL here. NOTE: anyone can view this in the page source.
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1552142259468902531/VAkWwa2uYqtnmV9zNCEvU5iAScVN5bdsNlcGeFPEoCNN_3ycxfrxN0-eY2DBUywMDxoO";
+const COOLDOWN_MS = 30000;
+
+const q = document.getElementById("q"), send = document.getElementById("send"),
+      status = document.getElementById("status"), qcount = document.getElementById("qcount");
+q.addEventListener("input", () => qcount.textContent = q.value.length + "/300");
+
+send.addEventListener("click", async () => {
+  const text = q.value.trim();
+  const say = (m, c) => { status.textContent = m; status.className = c || ""; };
+  if (!text) return say("> type something first", "err");
+  if (WEBHOOK_URL.startsWith("PASTE")) return say("> webhook not set up yet", "err");
+  let lastSent = 0;
+  try { lastSent = +localStorage.getItem("lastQ") || 0; } catch {}
+  const wait = COOLDOWN_MS - (Date.now() - lastSent);
+  if (wait > 0) return say(`> slow down, wait ${Math.ceil(wait / 1000)}s`, "err");
+
+  const visitor = document.getElementById("count").textContent;
+  send.disabled = true; say("> sending...");
+  try {
+    const r = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        allowed_mentions: { parse: [] },
+        embeds: [{
+          title: "visitor " + visitor,
+          description: text,
+          color: 0x00ff66,
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+    if (!r.ok) throw new Error(r.status);
+    try { localStorage.setItem("lastQ", Date.now()); } catch {}
+    q.value = ""; qcount.textContent = "0/300";
+    say("> sent! thanks for asking", "> alrighty, sent!");
+  } catch { say("> failed to send, try again later", "err"); }
+  send.disabled = false;
+});
